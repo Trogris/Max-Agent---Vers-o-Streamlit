@@ -6,6 +6,18 @@ from dataclasses import dataclass
 from io import BytesIO
 import zipfile
 
+# --- Patch do sqlite para Chroma no Streamlit Cloud ---
+try:
+    import sys
+    import pysqlite3  # fornecido por pysqlite3-binary
+    sys.modules["sqlite3"] = pysqlite3
+    sys.modules["sqlite3.dbapi2"] = pysqlite3.dbapi2
+except Exception:
+    # Se falhar, segue com sqlite3 do sistema (pode funcionar localmente)
+    pass
+
+import chromadb
+
 import chromadb
 from chromadb.utils import embedding_functions
 import requests  # <— novo
